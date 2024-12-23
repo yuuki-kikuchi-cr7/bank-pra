@@ -1,0 +1,3 @@
+[submodule "bank-pra"]
+	path = bank-pra
+	url = https://github.com/yuuki-kikuchi-cr7/bank-pra.git
