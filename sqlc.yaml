@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - schema: "./db/migration/" # スキーマファイルがあるディレクトリ
+    queries: "./db/query/"    # SQLクエリファイルがあるディレクトリ
+    engine: "postgresql"      # 使用するデータベースエンジン
+    gen:
+      go:
+        package: "db"         # 生成されるGoコードのパッケージ名
+        out: "./db/sqlc"      # 生成されるGoコードの出力ディレクトリ
+        emit_json_tags: true          # JSONタグを生成する
+        emit_prepared_queries: false  # プリペアドクエリを生成しない
+        emit_interface: true         # インターフェースを生成しない
+        emit_exact_table_names: false # 正確なテーブル名を使用しない
+        emit_empty_slices: true
