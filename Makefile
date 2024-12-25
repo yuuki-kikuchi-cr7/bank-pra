@@ -1,8 +1,5 @@
 postgres:
-	
-
 	docker run --name postgres12 --network bank-network -p 5436:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
-
 
 createdb:
 	# タブ文字を使う
