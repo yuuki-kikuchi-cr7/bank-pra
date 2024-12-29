@@ -28,6 +28,18 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
+    - name: Debug AWS Secrets Manager output
+      run: |
+        aws secretsmanager get-secret-value --secret-id simple_bank --query SecretString --output text
+
+    - name: Test jq parsing
+      run: |
+          echo '{"DB_DRIVER":"postgres","DB_SOURCE":"postgresql://root:Yu8ki247@simple-bank.cn2maog4si3x.us-west-2.rds.amazonaws.com:5432/simple_bank"}' | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]'
+
+    - name: Debug app.env file
+      run: cat app.env
+        
+      
     - name: Load secrets and save to app.env
       run: aws secretsmanager get-secret-value --secret-id simple_bank --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
 
