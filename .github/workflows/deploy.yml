@@ -28,9 +28,6 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Debug AWS Secrets Manager output
-      run: |
-        aws secretsmanager get-secret-value --secret-id simple_bank --query SecretString --output text
 
     - name: Test jq parsing
       run: |
