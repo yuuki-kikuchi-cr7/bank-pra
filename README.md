@@ -1,3 +1,119 @@
+銀行アプリプロジェクト
+
+このリポジトリは、Go、PostgreSQL、Dockerを使用して作成した銀行アプリケーションです。このアプリでは、口座管理、入出金記録、送金処理をサポートし、安全な認証機能を備えています。
+
+プロジェクト概要
+
+この銀行アプリは、以下の主要な機能を提供します:
+
+口座作成、残高管理、送金機能を含むCRUD操作
+
+安全な認証・認可処理
+
+トランザクション処理による整合性保持
+
+データベース設計
+
+データベースは以下の4つのテーブルで構成されています:
+
+accounts: 口座情報（id, owner, balance, currency, created_at）
+
+entries: 入出金履歴（id, account_id, amount, created_at）
+
+transfers: 送金情報（id, from_account_id, to_account_id, amount, created_at）
+
+users: ユーザー情報（username, hashed_password, full_name, email, password_changed_at, created_at）
+
+インデックスと外部キー
+
+各テーブルには検索効率を高めるためのインデックスを作成しています。
+
+外部キーを設定し、データの一貫性を確保しています。
+
+主なAPIエンドポイント
+
+以下はアプリケーションの主要なAPIエンドポイントです:
+
+認証・ユーザー管理
+
+POST /users: 新規ユーザー登録
+
+POST /users/login: ユーザーのログイン
+
+口座管理
+
+POST /accounts: 新規口座作成
+
+GET /accounts/:id: 指定したIDの口座情報取得
+
+GET /accounts: 所有者別口座一覧取得（ページング対応）
+
+PUT /accounts/:id: 口座残高更新
+
+DELETE /accounts/:id: 口座削除
+
+送金処理
+
+POST /transfers: 送金リクエストの作成
+
+使用技術
+
+Webフレームワーク: Gin を使用して RESTful API を構築
+
+データベース: Docker を使用した PostgreSQL
+
+マイグレーション: golang-migrate によるデータベーススキーマ管理
+
+型安全なクエリ: sqlc によるSQLからのCRUDコード自動生成
+
+設定管理: Viper を使用して設定ファイルと環境変数を管理
+
+認証: PASETO によるトークン認証を実装
+
+テスト
+
+gomock を使用したモックテストを導入し、APIエンドポイントに対し100%のテストカバレッジを達成。
+
+ランダムなデータを使った単体テストを実行し、CRUD操作が正しく動作することを確認。
+
+実行方法
+
+1. データベースの起動
+
+docker-compose up -d
+
+2. データベースマイグレーション
+
+migrate -path db/migrations -database "postgres://username:password@localhost:5432/dbname?sslmode=disable" -verbose up
+
+3. アプリケーションの起動
+
+go run main.go
+
+4. 単体テストの実行
+
+go test ./...
+
+CI/CD パイプライン
+
+GitHub Actions を用いて以下の処理を自動化:
+
+単体テストおよびモックテストの実行
+
+Docker イメージを Amazon ECR にプッシュ
+
+Amazon ECS へのデプロイ
+
+今後の改善点
+
+gRPC エンドポイントの追加
+
+詳細なログ出力と監視システムの導入
+
+
+
+
+
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/golang-migrate/migrate/ci.yaml?branch=master)](https://github.com/golang-migrate/migrate/actions/workflows/ci.yaml?query=branch%3Amaster)
 [![GoDoc](https://pkg.go.dev/badge/github.com/golang-migrate/migrate)](https://pkg.go.dev/github.com/golang-migrate/migrate/v4)
 [![Coverage Status](https://img.shields.io/coveralls/github/golang-migrate/migrate/master.svg)](https://coveralls.io/github/golang-migrate/migrate?branch=master)
